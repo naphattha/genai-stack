@@ -1,0 +1,6 @@
+# Dockerfile.finance
+FROM python:3.11-slim
+WORKDIR /app
+COPY ./src/finance /app
+RUN pip install --no-cache-dir -r requirements.txt
+CMD ["python", "load_to_neo4j.py"]
