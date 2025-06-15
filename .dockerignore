@@ -1,6 +1,19 @@
+# Exclude everything by default
 *
+# Allow Python code
 !*.py
+# Allow requirements
 !requirements.txt
-!images/*
-!front-end/*
+# Allow project source folders
+!src/
+!src/api/
+!src/api/**
+
+# Allow images
+!images/
+!images/**
+
+# Allow front-end, but ignore node_modules
+!front-end/
+!front-end/**
 front-end/node_modules/*
