@@ -1,19 +1,26 @@
 # Exclude everything by default
-*
-# Allow Python code
-!*.py
-# Allow requirements
-!requirements.txt
-# Allow project source folders
-!src/
-!src/api/
-!src/api/**
+**
 
-# Allow images
+# --- Allow general Python files and core requirements ---
+!*.py
+!*.ipynb
+!requirements.txt
+
+# --- Allow Dockerfiles ---
+!Dockerfile*
+!docker-compose.yml
+
+# --- Allow source code folders ---
+!src/
+!src/**
+!src/**/**
+
+# --- Allow images folder ---
 !images/
 !images/**
+!images/**/**
 
-# Allow front-end, but ignore node_modules
+# --- Allow front-end (except node_modules) ---
 !front-end/
 !front-end/**
-front-end/node_modules/*
+front-end/node_modules/

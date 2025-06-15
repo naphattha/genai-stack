@@ -40,26 +40,10 @@ services:
     volumes:
       - ./src/neo4j:/app
 
-  # ✅ Add this inside `services:`
-  finance-loader:
+  chatbot-neo4j-eng:
     build:
       context: .
-      dockerfile: Dockerfile.finance
-    volumes:
-      - ./src/finance:/load_to_neo4j
-    depends_on:
-      - neo4j
-    environment:
-      - NEO4J_URI=bolt://neo4j:7687
-      - NEO4J_USERNAME=neo4j
-      - NEO4J_PASSWORD=password
-
-  finance-chatbot:
-    build:
-      context: .
-      dockerfile: Dockerfile.api
-    volumes:
-      - ./src/api:/app
+      dockerfile: Dockerfile.chatbot-neo4j-eng
     ports:
       - "8501:8501"
     depends_on:
@@ -68,6 +52,47 @@ services:
       - NEO4J_URI=bolt://neo4j:7687
       - NEO4J_USERNAME=neo4j
       - NEO4J_PASSWORD=password
+
+  chatbot-neo4j-thai:
+    build:
+      context: .
+      dockerfile: Dockerfile.chatbot-neo4j-thai
+    ports:
+      - "8502:8501"
+    depends_on:
+      - neo4j
+    environment:
+      - NEO4J_URI=bolt://neo4j:7687
+      - NEO4J_USERNAME=neo4j
+      - NEO4J_PASSWORD=password
+
+  chatbot-mysql-eng:
+    build:
+      context: .
+      dockerfile: Dockerfile.chatbot-mysql-eng
+    ports:
+      - "8503:8501"
+    depends_on:
+      - mysql
+    environment:
+      - MYSQL_HOST=mysql
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=Wealth3visual%
+      - MYSQL_DATABASE=set50
+
+  chatbot-mysql-thai:
+    build:
+      context: .
+      dockerfile: Dockerfile.chatbot-mysql-thai
+    ports:
+      - "8504:8501"
+    depends_on:
+      - mysql
+    environment:
+      - MYSQL_HOST=mysql
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=Wealth3visual%
+      - MYSQL_DATABASE=set50
 
   llm: &llm
     image: ollama/ollama:latest
