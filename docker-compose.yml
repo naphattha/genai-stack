@@ -1,13 +1,44 @@
 version: "3.9"
 services:
 
+  mysql:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: Wealth3visual%
+      MYSQL_DATABASE: set50
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  mysql-loader:
+    build:
+      context: .
+      dockerfile: Dockerfile.mysql
+    depends_on:
+      - mysql
+    volumes:
+      - ./src/mysql:/app
+
   neo4j:
     image: neo4j:5.12
+    environment:
+      NEO4J_AUTH: neo4j/password
     ports:
       - "7474:7474"
       - "7687:7687"
-    environment:
-      NEO4J_AUTH: "neo4j/password"
+    volumes:
+      - neo4j_data:/data
+
+  neo4j-loader:
+    build:
+      context: .
+      dockerfile: Dockerfile.neo4jloader
+    depends_on:
+      - neo4j
+    volumes:
+      - ./src/neo4j:/app
 
   # ✅ Add this inside `services:`
   finance-loader:
@@ -280,3 +311,7 @@ services:
 
 networks:
   net:
+
+volumes:
+  mysql_data:
+  neo4j_data:

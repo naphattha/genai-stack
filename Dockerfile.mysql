@@ -1,0 +1,6 @@
+# Dockerfile.mysql
+FROM python:3.11-slim
+WORKDIR /app
+COPY ./src/mysql /app
+RUN pip install mysql-connector-python
+CMD ["python", "mysql_set50.py"]
