@@ -10,4 +10,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY ./src/chatbot/neo4j_THAI /app
 
-CMD ["streamlit", "run", "bot.py", "--server.port=8501", "--server.address=0.0.0.0"]
+CMD ["streamlit", "run", "bot.py", "--server.port=8502", "--server.address=0.0.0.0"]

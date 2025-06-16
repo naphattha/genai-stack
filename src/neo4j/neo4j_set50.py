@@ -64,12 +64,26 @@ company_names = {
 from neo4j import GraphDatabase
 import json
 from datetime import datetime
+import time
+
+def connect_neo4j_with_retry(uri, user, password, retries=10, delay=3):
+    for attempt in range(retries):
+        try:
+            drv = GraphDatabase.driver(uri, auth=(user, password))
+            # ลองรันคำสั่งเล็กน้อยเพื่อเช็คการเชื่อมต่อ
+            with drv.session() as session:
+                session.run("RETURN 1")
+            return drv
+        except Exception as e:
+            print(f"[Neo4j] Connection attempt {attempt+1} failed: {e}")
+            time.sleep(delay)
+    raise Exception("Neo4j not available after multiple attempts")
 
 # Neo4j Connection Setup
-uri = "bolt://localhost:7687"
+uri = "bolt://neo4j:7687"
 user = "neo4j"
-password = "Neo4jpassword"
-driver = GraphDatabase.driver(uri, auth=(user, password))
+password = "password"
+driver = connect_neo4j_with_retry(uri, user, password)
 
 # Load JSON Data
 with open('FilteredEODData.json') as eod_file:

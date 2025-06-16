@@ -56,14 +56,23 @@ company_names = {
     "WHA": "บริษัท ดับบลิวเอชเอ คอร์ปอเรชั่น จำกัด (มหาชน)"
 }
 
-# MySQL Connection
-def connect_db():
-    return mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="Wealth3visual%",
-        database="set50"
-    )
+import time
+
+# MySQL Connection with Retry
+def connect_db_with_retry(retries=10, delay=3):
+    for attempt in range(retries):
+        try:
+            return mysql.connector.connect(
+                host="mysql",  # สำคัญ: ใช้ service name
+                user="root",
+                password="Wealth3visual%",
+                database="set50"
+            )
+        except mysql.connector.Error as err:
+            print(f"[MySQL] Connection attempt {attempt+1} failed: {err}")
+            time.sleep(delay)
+    raise Exception("MySQL not available after multiple attempts")
+
 
 # Function to Create Tables (Only Runs Once)
 def create_tables(cursor):
@@ -276,7 +285,7 @@ def insert_market_ratios(cursor, data):
 
 # Main Execution
 try:
-    connection = connect_db()
+    connection = connect_db_with_retry()
     cursor = connection.cursor()
 
     # Create tables if they do not exist
@@ -300,5 +309,7 @@ except mysql.connector.Error as err:
     print(f"Error: {err}")
 
 finally:
-    cursor.close()
-    connection.close()
+    if 'cursor' in locals():
+        cursor.close()
+    if 'connection' in locals() and connection.is_connected():
+        connection.close()
