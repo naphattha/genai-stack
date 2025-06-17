@@ -94,6 +94,7 @@ services:
       - NEO4J_PASSWORD=password
       - OLLAMA_MODEL=gemma:2b
       - OLLAMA_NUM_PARALLEL=1
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
     networks:
       - genai-stack
 
