@@ -98,24 +98,6 @@ services:
     networks:
       - genai-stack
 
-  # chatbot-mysql-thai:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile.chatbot-mysql-thai
-  #   ports:
-  #     - "8504:8504"
-  #   depends_on:
-  #     - mysql
-  #     - ollama  
-  #   environment:
-  #     - MYSQL_HOST=mysql
-  #     - MYSQL_USER=root
-  #     - MYSQL_PASSWORD=Wealth3visual%
-  #     - MYSQL_DATABASE=set50
-  #     - OLLAMA_MODEL=gemma:2b
-  #     - OLLAMA_NUM_PARALLEL=1
-  #   networks:
-  #     - genai-stack
   ollama:
     image: ollama/ollama
     ports:
